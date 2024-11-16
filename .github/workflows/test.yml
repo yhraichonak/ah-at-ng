@@ -1,0 +1,31 @@
+# .github/workflows/test.yml
+name: AH AT NG Workflow
+
+on:
+    push:
+    workflow_dispatch:
+      inputs:
+        test_environment:
+          description: 'Test Environment'
+          required: true
+          default: 'local'
+        tests:
+          description: 'Tests'
+          required: false
+          default: ''
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+      - run: echo "Trying to execute AT on env [${{ github.event.inputs.test_environment}}] tests [${{ github.event.inputs.tests}}]]"
+      - run: npm install
+      - run: STAY_ALIVE=false TEST_ENVIRONMENT=local docker compose  -f docker-compose.yml  up
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v5
+        if: success() || failure()
+        with:
+          report_paths: '**/junit.xml'
