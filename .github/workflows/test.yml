@@ -31,13 +31,13 @@ jobs:
       - run: echo "Trying to execute AT on env [${{ github.event.inputs.test_environment}}] tests [${{ github.event.inputs.tests}}]]"
       - run: npm install
       - run: STAY_ALIVE=false TEST_ENVIRONMENT=local docker compose  -f docker-compose.yml  up
-      - name: Publish Test Report
+      - name: Publish Junit Test Results
         uses: mikepenz/action-junit-report@v5
         if: success() || failure()
         with:
           report_paths: '**/junit.xml'
 
-      - name: Load test report history
+      - name: Load Allure test report history
         uses: actions/checkout@v3
         if: always()
         continue-on-error: true
@@ -45,7 +45,7 @@ jobs:
           ref: gh-pages
           path: gh-pages
 
-      - name: Build test report
+      - name: Build Allure test report
         uses: simple-elf/allure-report-action@v1.7
         if: always()
         with:
@@ -53,7 +53,7 @@ jobs:
           allure_history: allure-history
           allure_results: build/allure-results
 
-      - name: Publish test report
+      - name: Publish Allure test report
         uses: peaceiris/actions-gh-pages@v3
         if: always()
         with:
