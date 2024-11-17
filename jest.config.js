@@ -11,6 +11,11 @@ module.exports = {
             "json",
             "node"
         ],
+    reporters: [
+        'default',
+        ['jest-ctrf-json-reporter', {}],
+        ['jest-junit', {}],
+    ],
     testRunner: 'jest-jasmine2',
     roots: [
         "./src/tests/bs-mvp",

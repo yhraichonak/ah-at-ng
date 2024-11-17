@@ -36,7 +36,8 @@ jobs:
         if: success() || failure()
         with:
           report_paths: '**/junit.xml'
-
+      - name: Publish CTRF Test Results
+        run: npx github-actions-ctrf ctrf/ctrf-report.json
       - name: Load Allure test report history
         uses: actions/checkout@v3
         if: always()
