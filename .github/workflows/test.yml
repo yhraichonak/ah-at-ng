@@ -21,6 +21,13 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 17
+
       - run: echo "Trying to execute AT on env [${{ github.event.inputs.test_environment}}] tests [${{ github.event.inputs.tests}}]]"
       - run: npm install
       - run: STAY_ALIVE=false TEST_ENVIRONMENT=local docker compose  -f docker-compose.yml  up
@@ -29,3 +36,27 @@ jobs:
         if: success() || failure()
         with:
           report_paths: '**/junit.xml'
+
+      - name: Load test report history
+        uses: actions/checkout@v3
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Build test report
+        uses: simple-elf/allure-report-action@v1.7
+        if: always()
+        with:
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: build/allure-results
+
+      - name: Publish test report
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
