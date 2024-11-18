@@ -1,0 +1,5 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Mon Nov 18 12:55:18 GMT 2024","Mon Nov 18 12:55:18 GMT 2024","0","","POC API Suite","","POC API Suite","Artificial flaky test","Artificial flaky test",""
+"failed","Mon Nov 18 12:55:18 GMT 2024","Mon Nov 18 12:55:18 GMT 2024","19","","POC API Suite","","POC API Suite","Make BS status call","Make BS status call","DESC: Get user posts"
+"passed","Mon Nov 18 12:55:18 GMT 2024","Mon Nov 18 12:55:18 GMT 2024","1","","POC API Suite","","POC API Suite","Artifical passed test ","Artifical passed test ",""
+"failed","Mon Nov 18 12:55:18 GMT 2024","Mon Nov 18 12:55:18 GMT 2024","1","","POC API Suite","","POC API Suite","Artifical failed test ","Artifical failed test ",""
