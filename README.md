@@ -1,6 +1,6 @@
 ### To run API tests: use commands 
 `ENIRONMENT=local npm run `
-`TRACE_API_CALLS=local ENIRONMENT=local npm run test`
+`TRACE_API_CALLS=local ENVIRONMENT=local npm run test`
 `npm run report`
 ### To run tests via Docker:  
 `TEST_ENVIRONMENT=http://127.0.0.1:3000/ docker-compose  up -d`
