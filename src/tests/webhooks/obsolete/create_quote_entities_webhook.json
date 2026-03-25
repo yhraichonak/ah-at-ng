@@ -1,0 +1,29 @@
+{
+  "@odata.context": "https://tesediws.iasset.com/v3/data/$metadata#Collection(iAsset.DTO.OData.Quote.QuoteEntity)",
+  "value": [
+    {
+      "QuoteEntityId": 237126,
+      "QuoteId": 51448,
+      "EntityType": "Vendor",
+      "EntityId": 255861
+    },
+    {
+      "QuoteEntityId": 237127,
+      "QuoteId": 51448,
+      "EntityType": "Distributor",
+      "EntityId": 7001
+    },
+    {
+      "QuoteEntityId": 237128,
+      "QuoteId": 51448,
+      "EntityType": "Reseller",
+      "EntityId": 301986
+    },
+    {
+      "QuoteEntityId": 237129,
+      "QuoteId": 51448,
+      "EntityType": "EndUser",
+      "EntityId": 308197
+    }
+  ]
+}

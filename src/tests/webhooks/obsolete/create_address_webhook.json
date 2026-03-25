@@ -1,0 +1,28 @@
+{
+  "EntityAddressId": 531901,
+  "EntityId": 301986,
+  "AddressType": "Business",
+  "AddressReference": "02922ee2-602c-4187-ba2f-e56394e21e5a",
+  "AccountNo": "",
+  "AddressName": "BitHawk AG",
+  "Phone": "+41 58 226 01 01",
+  "Fax": "",
+  "EmailAddress": "kreditorenrechnungen@bithawk.ch",
+  "IsDefault": true,
+  "LocationId": 292504,
+  "Location": {
+    "LocationId": 292504,
+    "BuildingName": "",
+    "UnitNo": "",
+    "BuildingLevel": "",
+    "Address1": "Allee 1A",
+    "Address2": "",
+    "Address3": "",
+    "Address4": "",
+    "Postcode": "6210",
+    "City": "Sursee",
+    "State": "",
+    "CountryCode": "CH",
+    "StateName": null
+  }
+}

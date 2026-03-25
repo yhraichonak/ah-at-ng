@@ -1,0 +1,11 @@
+{
+  "@odata.context": "https://tesediws.iasset.com/v3/data/$metadata#Quotes(435)/CustomFields",
+  "value": [
+    { "Id": 435, "Name": "Group ID", "Value": "87-SMD501 55" },
+    { "Id": 435, "Name": "Billing Cycle Code", "Value": "ZE" },
+    { "Id": 435, "Name": "End Date First Invoice", "Value": "2023-01-31" },
+    { "Id": 435, "Name": "Sell Discount", "Value": "10.0000" },
+    { "Id": 435, "Name": "Incumbent Sell Discount", "Value": "-5.0000" },
+    { "Id": 435, "Name": "Representation", "Value": "HPE" }
+  ]
+}

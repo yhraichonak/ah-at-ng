@@ -1,0 +1,5789 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "App"
+        ]
+      }
+    },
+    "/whoAmI": {
+      "get": {
+        "operationId": "AppController_whoAmI",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "App"
+        ]
+      }
+    },
+    "/metrics": {
+      "get": {
+        "operationId": "MetricsController_index",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Metrics"
+        ]
+      }
+    },
+    "/products": {
+      "get": {
+        "operationId": "ProductsController_getProducts",
+        "parameters": [
+          {
+            "name": "vendor",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showInDropdown",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductListDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Products"
+        ]
+      }
+    },
+    "/contracts": {
+      "get": {
+        "operationId": "ContractsController_getContracts",
+        "parameters": [
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Field to sort by",
+            "schema": {
+              "enum": [
+                "id",
+                "contractNo",
+                "groupId",
+                "sar",
+                "status",
+                "startDate",
+                "endDate",
+                "createdAt",
+                "updatedAt"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "description": "Sort order (ascending or descending)",
+            "schema": {
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search query to filter by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "Status filter (multi-select)",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "Active",
+                  "Archived",
+                  "Terminated",
+                  "Expired",
+                  "Renewed"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contracts list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContractListModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Contracts"
+        ]
+      }
+    },
+    "/contracts/{contractId}": {
+      "get": {
+        "operationId": "ContractsController_getContractById",
+        "parameters": [
+          {
+            "name": "contractId",
+            "required": true,
+            "in": "path",
+            "description": "Contract ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The contract object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContractModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Contracts"
+        ]
+      }
+    },
+    "/contracts/{contractId}/pdf": {
+      "get": {
+        "operationId": "ContractsController_getQuotePdf",
+        "parameters": [
+          {
+            "name": "contractId",
+            "required": true,
+            "in": "path",
+            "description": "Contract ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PDF file",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Contracts"
+        ]
+      }
+    },
+    "/contracts/{contractId}/assets": {
+      "get": {
+        "operationId": "ContractsController_getAssetsByContractId",
+        "parameters": [
+          {
+            "name": "contractId",
+            "required": true,
+            "in": "path",
+            "description": "Contract ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Field to sort by",
+            "schema": {
+              "enum": [
+                "id",
+                "serialNo",
+                "productName",
+                "productSku",
+                "serviceLevelSku",
+                "serviceGroupSku",
+                "buyPrice",
+                "sellPrice",
+                "retailPrice",
+                "endCustomerPrice",
+                "createdAt",
+                "updatedAt"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "description": "Sort order (ascending or descending)",
+            "schema": {
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search query to filter by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hasEndCustomerPrice",
+            "required": false,
+            "in": "query",
+            "description": "Filter by presence of end customer price",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetListModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get assets by contract ID",
+        "tags": [
+          "Contracts"
+        ]
+      }
+    },
+    "/contracts/{contractId}/contacts": {
+      "get": {
+        "operationId": "ContractsController_getContactsByContractId",
+        "parameters": [
+          {
+            "name": "contractId",
+            "required": true,
+            "in": "path",
+            "description": "Contract ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The contacts list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactListModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Contracts"
+        ]
+      }
+    },
+    "/contracts/{contractId}/quotes": {
+      "get": {
+        "operationId": "ContractsController_getQuotes",
+        "parameters": [
+          {
+            "name": "contractId",
+            "required": true,
+            "in": "path",
+            "description": "Contract ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Field to sort by",
+            "schema": {
+              "enum": [
+                "id",
+                "quoteNo",
+                "groupId",
+                "status",
+                "quoteType",
+                "startDate",
+                "endDate",
+                "expiryDate",
+                "createdAt",
+                "updatedAt"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "description": "Sort order (ascending or descending)",
+            "schema": {
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search query to filter by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "Quote statuses to filter by (multi-select)",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "Open",
+                  "Renewed",
+                  "Ordered",
+                  "Lost",
+                  "In Preparation",
+                  "Expires in 90 days",
+                  "Expires in 60 days",
+                  "Expires in 30 days",
+                  "Expired",
+                  "Change Requested",
+                  "Cancelled",
+                  "Archived",
+                  "Active",
+                  "Discount Approval",
+                  "Quote Ready",
+                  "Customer Contact",
+                  "Ready to Order",
+                  "Invoiced",
+                  "Created"
+                ]
+              }
+            }
+          },
+          {
+            "name": "type",
+            "required": false,
+            "in": "query",
+            "description": "Quote type to filter by (single-select)",
+            "schema": {
+              "enum": [
+                "RENEWAL",
+                "NET NEW"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Quotes list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteListModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Contracts"
+        ]
+      }
+    },
+    "/contracts/{contractId}/assets/export": {
+      "get": {
+        "operationId": "ContractsController_exportAssetsByContractId",
+        "parameters": [
+          {
+            "name": "contractId",
+            "required": true,
+            "in": "path",
+            "description": "Contract ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Field to sort by",
+            "schema": {
+              "enum": [
+                "id",
+                "serialNo",
+                "productName",
+                "productSku",
+                "serviceLevelSku",
+                "serviceGroupSku",
+                "buyPrice",
+                "sellPrice",
+                "retailPrice",
+                "endCustomerPrice",
+                "createdAt",
+                "updatedAt"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "description": "Sort order (ascending or descending)",
+            "schema": {
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search query to filter by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hasEndCustomerPrice",
+            "required": false,
+            "in": "query",
+            "description": "Filter by presence of end customer price",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "format",
+            "required": false,
+            "in": "query",
+            "description": "Export format (csv or xlsx)",
+            "schema": {
+              "default": "csv",
+              "enum": [
+                "csv",
+                "xlsx"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assets exported successfully",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Export assets by contract ID as CSV or XLSX",
+        "tags": [
+          "Contracts"
+        ]
+      }
+    },
+    "/quotes": {
+      "get": {
+        "operationId": "QuotesController_getQuotes",
+        "parameters": [
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Field to sort by",
+            "schema": {
+              "enum": [
+                "id",
+                "quoteNo",
+                "groupId",
+                "status",
+                "quoteType",
+                "startDate",
+                "endDate",
+                "expiryDate",
+                "createdAt",
+                "updatedAt"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "description": "Sort order (ascending or descending)",
+            "schema": {
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search query to filter by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "Quote statuses to filter by (multi-select)",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "Open",
+                  "Renewed",
+                  "Ordered",
+                  "Lost",
+                  "In Preparation",
+                  "Expires in 90 days",
+                  "Expires in 60 days",
+                  "Expires in 30 days",
+                  "Expired",
+                  "Change Requested",
+                  "Cancelled",
+                  "Archived",
+                  "Active",
+                  "Discount Approval",
+                  "Quote Ready",
+                  "Customer Contact",
+                  "Ready to Order",
+                  "Invoiced",
+                  "Created"
+                ]
+              }
+            }
+          },
+          {
+            "name": "type",
+            "required": false,
+            "in": "query",
+            "description": "Quote type to filter by (single-select)",
+            "schema": {
+              "enum": [
+                "RENEWAL",
+                "NET NEW"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Quotes list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteListModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Quotes"
+        ]
+      },
+      "post": {
+        "operationId": "QuotesController_requestQuote",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestQuoteModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Quotes"
+        ]
+      }
+    },
+    "/quotes/{quoteId}": {
+      "get": {
+        "operationId": "QuotesController_getQuoteById",
+        "parameters": [
+          {
+            "name": "quoteId",
+            "required": true,
+            "in": "path",
+            "description": "Quote ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The quote object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Quotes"
+        ]
+      }
+    },
+    "/quotes/{quoteId}/pdf": {
+      "get": {
+        "operationId": "QuotesController_getQuotePdf",
+        "parameters": [
+          {
+            "name": "quoteId",
+            "required": true,
+            "in": "path",
+            "description": "Quote ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PDF file",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Quotes"
+        ]
+      }
+    },
+    "/quotes/{quoteId}/assets": {
+      "get": {
+        "operationId": "QuotesController_getAssetsByQuoteId",
+        "parameters": [
+          {
+            "name": "quoteId",
+            "required": true,
+            "in": "path",
+            "description": "Quote ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Field to sort by",
+            "schema": {
+              "enum": [
+                "id",
+                "itemNo",
+                "serialNo",
+                "productName",
+                "productSku",
+                "serviceLevelSku",
+                "serviceGroupSku",
+                "buyPrice",
+                "sellPrice",
+                "retailPrice",
+                "createdAt",
+                "updatedAt"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "description": "Sort order (ascending or descending)",
+            "schema": {
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search query to filter by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hasEndCustomerPrice",
+            "required": false,
+            "in": "query",
+            "description": "Filter by presence of end customer price",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetListModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get assets by quote ID",
+        "tags": [
+          "Quotes"
+        ]
+      }
+    },
+    "/quotes/{quoteId}/contacts": {
+      "get": {
+        "operationId": "QuotesController_getContactsByQuoteId",
+        "parameters": [
+          {
+            "name": "quoteId",
+            "required": true,
+            "in": "path",
+            "description": "Quote ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The contacts list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactListModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Quotes"
+        ]
+      }
+    },
+    "/quotes/{quoteId}/contracts": {
+      "get": {
+        "operationId": "QuotesController_getContracts",
+        "parameters": [
+          {
+            "name": "quoteId",
+            "required": true,
+            "in": "path",
+            "description": "Quote ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Field to sort by",
+            "schema": {
+              "enum": [
+                "id",
+                "contractNo",
+                "groupId",
+                "sar",
+                "status",
+                "startDate",
+                "endDate",
+                "createdAt",
+                "updatedAt"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "description": "Sort order (ascending or descending)",
+            "schema": {
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search query to filter by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "Status filter (multi-select)",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "Active",
+                  "Archived",
+                  "Terminated",
+                  "Expired",
+                  "Renewed"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contracts list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContractListModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Quotes"
+        ]
+      }
+    },
+    "/quotes/{quoteId}/assets/export": {
+      "get": {
+        "operationId": "QuotesController_exportAssetsByQuoteId",
+        "parameters": [
+          {
+            "name": "quoteId",
+            "required": true,
+            "in": "path",
+            "description": "Quote ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Field to sort by",
+            "schema": {
+              "enum": [
+                "id",
+                "itemNo",
+                "serialNo",
+                "productName",
+                "productSku",
+                "serviceLevelSku",
+                "serviceGroupSku",
+                "buyPrice",
+                "sellPrice",
+                "retailPrice",
+                "createdAt",
+                "updatedAt"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "description": "Sort order (ascending or descending)",
+            "schema": {
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search query to filter by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hasEndCustomerPrice",
+            "required": false,
+            "in": "query",
+            "description": "Filter by presence of end customer price",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "format",
+            "required": false,
+            "in": "query",
+            "description": "Export format (csv or xlsx)",
+            "schema": {
+              "default": "csv",
+              "enum": [
+                "csv",
+                "xlsx"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assets exported successfully",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Export assets by quote ID as CSV or XLSX",
+        "tags": [
+          "Quotes"
+        ]
+      }
+    },
+    "/quotes/{quoteId}/approve": {
+      "post": {
+        "operationId": "QuotesController_approveByQuoteId",
+        "parameters": [
+          {
+            "name": "quoteId",
+            "required": true,
+            "in": "path",
+            "description": "Quote ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveQuoteModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Quotes"
+        ]
+      }
+    },
+    "/quotes/{quoteId}/decline": {
+      "post": {
+        "operationId": "QuotesController_declineByQuoteId",
+        "parameters": [
+          {
+            "name": "quoteId",
+            "required": true,
+            "in": "path",
+            "description": "Quote ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeclineQuoteModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Quotes"
+        ]
+      }
+    },
+    "/quotes/{quoteId}/change-request": {
+      "post": {
+        "operationId": "QuotesController_requestQuoteChange",
+        "parameters": [
+          {
+            "name": "quoteId",
+            "required": true,
+            "in": "path",
+            "description": "Quote ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestQuoteChangeModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Quotes"
+        ]
+      }
+    },
+    "/users/me/permissions": {
+      "get": {
+        "operationId": "UsersController_getUserPermissions",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/me/roles": {
+      "get": {
+        "operationId": "UsersController_getUserRoles",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/disable": {
+      "post": {
+        "operationId": "UsersController_disableUser",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDisableDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/me": {
+      "get": {
+        "operationId": "UsersController_getUserMe",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      },
+      "post": {
+        "operationId": "UsersController_updateUserMe",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "operationId": "UsersController_getUserById",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      },
+      "post": {
+        "operationId": "UsersController_updateUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/{userId}/roles/{roleId}": {
+      "post": {
+        "operationId": "UsersController_assignRoleToUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "roleId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/roles/{roleId}/permissions": {
+      "put": {
+        "operationId": "RolesController_assignPermissionsToRole",
+        "parameters": [
+          {
+            "name": "roleId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PermissionsModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Permissions updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PermissionsModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Roles"
+        ]
+      },
+      "get": {
+        "operationId": "RolesController_getPermissionsByRole",
+        "parameters": [
+          {
+            "name": "roleId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PermissionsModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Roles"
+        ]
+      }
+    },
+    "/entities": {
+      "get": {
+        "operationId": "EntitiesController_getEntities",
+        "parameters": [
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Field to sort by",
+            "schema": {
+              "enum": [
+                "id",
+                "name",
+                "type",
+                "createdAt",
+                "updatedAt"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "description": "Sort order (ascending or descending)",
+            "schema": {
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Filter entities by name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "Filter entities by name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "required": false,
+            "in": "query",
+            "description": "Filter entities by type",
+            "schema": {
+              "enum": [
+                "Vendor",
+                "Distributor",
+                "Reseller",
+                "EndUser"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "ids",
+            "required": false,
+            "in": "query",
+            "description": "Filter entities by ids",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entities list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityListModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Entities"
+        ]
+      }
+    },
+    "/entities/{entityId}": {
+      "get": {
+        "operationId": "EntitiesController_getEntityById",
+        "parameters": [
+          {
+            "name": "entityId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The entity object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Entities"
+        ]
+      }
+    },
+    "/entities/{entityId}/assets": {
+      "get": {
+        "operationId": "EntitiesController_getAssetsByEntityId",
+        "parameters": [
+          {
+            "name": "entityId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Field to sort by",
+            "schema": {
+              "enum": [
+                "id",
+                "name",
+                "type",
+                "createdAt",
+                "updatedAt"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "description": "Sort order (ascending or descending)",
+            "schema": {
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Filter entities by name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "Filter entities by name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "required": false,
+            "in": "query",
+            "description": "Filter entities by type",
+            "schema": {
+              "enum": [
+                "Vendor",
+                "Distributor",
+                "Reseller",
+                "EndUser"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "ids",
+            "required": false,
+            "in": "query",
+            "description": "Filter entities by ids",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assets list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetListModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Entities"
+        ]
+      }
+    },
+    "/entities/{entityId}/contacts": {
+      "get": {
+        "operationId": "EntitiesController_getContactsByEntityId",
+        "parameters": [
+          {
+            "name": "entityId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contacts list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactListModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Entities"
+        ]
+      }
+    },
+    "/entities/{entityId}/assets/export": {
+      "get": {
+        "operationId": "EntitiesController_exportAssetsByEntityId",
+        "parameters": [
+          {
+            "name": "entityId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Field to sort by",
+            "schema": {
+              "enum": [
+                "id",
+                "name",
+                "type",
+                "createdAt",
+                "updatedAt"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "description": "Sort order (ascending or descending)",
+            "schema": {
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Filter entities by name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "Filter entities by name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "required": false,
+            "in": "query",
+            "description": "Filter entities by type",
+            "schema": {
+              "enum": [
+                "Vendor",
+                "Distributor",
+                "Reseller",
+                "EndUser"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "ids",
+            "required": false,
+            "in": "query",
+            "description": "Filter entities by ids",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "format",
+            "required": false,
+            "in": "query",
+            "description": "Export format (csv or xlsx)",
+            "schema": {
+              "default": "csv",
+              "enum": [
+                "csv",
+                "xlsx"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assets exported successfully",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Export assets by entity ID as CSV or XLSX",
+        "tags": [
+          "Entities"
+        ]
+      }
+    },
+    "/customers": {
+      "get": {
+        "operationId": "CustomersController_getCustomers",
+        "parameters": [
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Filter customers by name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Customers list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityListModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Customers"
+        ]
+      }
+    },
+    "/customers/{entityId}": {
+      "get": {
+        "operationId": "CustomersController_getCustomerById",
+        "parameters": [
+          {
+            "name": "entityId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entities list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityListModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Customers"
+        ]
+      }
+    },
+    "/organizations": {
+      "get": {
+        "operationId": "OrganizationsController_getAllOrganizations",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationListDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Organizations"
+        ]
+      },
+      "post": {
+        "operationId": "OrganizationsController_createOrganization",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrganizationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create a new organization",
+        "tags": [
+          "Organizations"
+        ]
+      }
+    },
+    "/organizations/{id}": {
+      "get": {
+        "operationId": "OrganizationsController_getOrganizationById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Organizations"
+        ]
+      }
+    },
+    "/organizations/{id}/roles": {
+      "get": {
+        "operationId": "OrganizationsController_getRoles",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Organizations"
+        ]
+      }
+    },
+    "/organizations/{id}/users": {
+      "get": {
+        "operationId": "OrganizationsController_getUsersForOrganization",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": ""
+          }
+        },
+        "summary": "Get organization users",
+        "tags": [
+          "Organizations"
+        ]
+      }
+    },
+    "/organizations/admin/all": {
+      "get": {
+        "operationId": "OrganizationsController_getAdminOrganizations",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationListDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all organizations",
+        "tags": [
+          "Organizations"
+        ]
+      }
+    },
+    "/organizations/{id}/entity": {
+      "get": {
+        "operationId": "OrganizationsController_getOrganizationEntity",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityEntity"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get organization linked entity",
+        "tags": [
+          "Organizations"
+        ]
+      },
+      "post": {
+        "operationId": "OrganizationsController_linkEntityToOrganization",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkEntityDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationEntityDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Link entity to organization",
+        "tags": [
+          "Organizations"
+        ]
+      },
+      "put": {
+        "operationId": "OrganizationsController_updateEntityLink",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkEntityDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationEntityDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Update organization entity link",
+        "tags": [
+          "Organizations"
+        ]
+      }
+    },
+    "/organizations/{id}/entity/{entityId}": {
+      "delete": {
+        "operationId": "OrganizationsController_unlinkEntity",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "entityId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Unlink entity from organization",
+        "tags": [
+          "Organizations"
+        ]
+      }
+    },
+    "/search": {
+      "get": {
+        "operationId": "SearchController_globalSearch",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Maximum number of results per category",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "query",
+            "required": true,
+            "in": "query",
+            "description": "Search query string",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns search results from all categories"
+          }
+        },
+        "summary": "Global search across quotes, contracts, assets, and customers",
+        "tags": [
+          "Search"
+        ]
+      }
+    },
+    "/auth/get-login-url": {
+      "get": {
+        "operationId": "AuthController_getLoginUrl",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/revoke": {
+      "post": {
+        "operationId": "AuthController_revoke",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "operationId": "AuthController_refresh",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/authorize": {
+      "post": {
+        "operationId": "AuthController_authorize",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/get-logout-url": {
+      "post": {
+        "operationId": "AuthController_getLogoutUrl",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/dev/token": {
+      "post": {
+        "operationId": "DevAuthController_getDevToken",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Email of the user to authenticate",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DevTokenRequestDto"
+              },
+              "examples": {
+                "example1": {
+                  "summary": "Standard Request",
+                  "description": "Request authentication tokens for a development user",
+                  "value": {
+                    "email": "tesedi@example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Get development authentication tokens",
+        "tags": [
+          "DevAuth"
+        ]
+      }
+    },
+    "/auth/dev/link-user": {
+      "post": {
+        "operationId": "DevAuthController_linkUser",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DevUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "DevAuth"
+        ]
+      }
+    },
+    "/schema": {
+      "get": {
+        "operationId": "SchemaController_getFullSchema",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved full schema"
+          }
+        },
+        "summary": "Get full OpenAPI schema",
+        "tags": [
+          "schema"
+        ]
+      }
+    },
+    "/schema/json": {
+      "get": {
+        "operationId": "SchemaController_getAllJsonSchemas",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all JSON schemas"
+          },
+          "404": {
+            "description": "No JSON schemas found"
+          }
+        },
+        "summary": "Get all JSON schemas organized by paths",
+        "tags": [
+          "schema"
+        ]
+      }
+    },
+    "/schema/json/{path}": {
+      "get": {
+        "operationId": "SchemaController_getJsonSchemaByPath",
+        "parameters": [
+          {
+            "name": "path",
+            "required": true,
+            "in": "path",
+            "description": "API path to get schemas for",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved JSON schema for path"
+          },
+          "404": {
+            "description": "Path not found"
+          }
+        },
+        "summary": "Get JSON schema for a specific path",
+        "tags": [
+          "schema"
+        ]
+      }
+    },
+    "/schema/{path}": {
+      "get": {
+        "operationId": "SchemaController_getEndpointSchema",
+        "parameters": [
+          {
+            "name": "path",
+            "required": true,
+            "in": "path",
+            "description": "API endpoint path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved endpoint schema"
+          },
+          "404": {
+            "description": "Endpoint not found"
+          }
+        },
+        "summary": "Get schema for specific endpoint",
+        "tags": [
+          "schema"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Asset Hub API",
+    "description": "API documentation for the Asset Hub",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "JWT-auth": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http",
+        "name": "JWT",
+        "description": "Enter JWT token",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "ProductListDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "vendor": {
+                  "type": "string"
+                },
+                "sku": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "showInDropdown": {
+                  "type": "boolean"
+                },
+                "weight": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "vendor",
+                "sku",
+                "description",
+                "showInDropdown",
+                "weight"
+              ],
+              "title": "Product",
+              "description": "Product model"
+            }
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "number"
+              },
+              "page": {
+                "type": "number"
+              },
+              "limit": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "total",
+              "page",
+              "limit"
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "meta"
+        ],
+        "title": "ProductList",
+        "description": "Product list model"
+      },
+      "ContractListModel": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Contract ID"
+                },
+                "contractNumber": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Contract Number"
+                },
+                "sar": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "SAR Number"
+                },
+                "status": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Contract Status"
+                },
+                "groupId": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Group ID"
+                },
+                "startDate": {
+                  "type": "string",
+                  "format": "date-time",
+                  "nullable": true,
+                  "description": "Start Date"
+                },
+                "endDate": {
+                  "type": "string",
+                  "format": "date-time",
+                  "nullable": true,
+                  "description": "End Date"
+                },
+                "currency": {
+                  "type": "string",
+                  "enum": [
+                    "CHF",
+                    "EUR",
+                    "GBP",
+                    "USD"
+                  ],
+                  "nullable": true,
+                  "description": "Currency code"
+                },
+                "retailValue": {
+                  "type": "number",
+                  "nullable": true,
+                  "description": "Retail Value"
+                },
+                "_links": {
+                  "type": "object",
+                  "properties": {
+                    "self": {
+                      "type": "object",
+                      "properties": {
+                        "uri": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "uri"
+                      ],
+                      "description": "Self"
+                    },
+                    "endUser": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "uri": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "uri"
+                      ],
+                      "description": "End User"
+                    }
+                  },
+                  "required": [
+                    "self",
+                    "endUser"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "_links"
+              ],
+              "title": "ContractListItem",
+              "description": "Contract list item model"
+            }
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "hasNextPage": {
+                "type": "boolean",
+                "description": "Whether there are more items to fetch"
+              },
+              "nextCursor": {
+                "type": "string",
+                "nullable": true,
+                "description": "Cursor to use for the next page"
+              },
+              "totalCount": {
+                "type": "integer",
+                "description": "Total number of items (if available)"
+              }
+            },
+            "required": [
+              "hasNextPage",
+              "nextCursor"
+            ],
+            "title": "PaginationMeta",
+            "description": "Pagination metadata"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ],
+        "title": "PaginatedResponse",
+        "description": "Paginated response containing items"
+      },
+      "ErrorModel": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error description"
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "statusCode": {
+            "type": "number",
+            "description": "HTTP status code"
+          }
+        },
+        "required": [
+          "message",
+          "statusCode"
+        ],
+        "title": "Error",
+        "description": "Error object"
+      },
+      "ContractModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Contract ID"
+          },
+          "contractNumber": {
+            "type": "string",
+            "nullable": true,
+            "description": "Contract Number"
+          },
+          "sar": {
+            "type": "string",
+            "nullable": true,
+            "description": "SAR Number"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "description": "Contract Status"
+          },
+          "groupId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Group ID"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "Start Date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "End Date"
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "CHF",
+              "EUR",
+              "GBP",
+              "USD"
+            ],
+            "nullable": true,
+            "description": "Currency code"
+          },
+          "vendorId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Vendor ID"
+          },
+          "distributorId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Distributor ID"
+          },
+          "resellerId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Reseller ID"
+          },
+          "endUserId": {
+            "type": "string",
+            "nullable": true,
+            "description": "End User ID"
+          },
+          "retailValue": {
+            "type": "number",
+            "nullable": true,
+            "description": "Retail Value"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "Notes": {
+                "type": "string"
+              },
+              "EndDate": {
+                "type": "string"
+              },
+              "StartDate": {
+                "type": "string"
+              },
+              "ContractId": {
+                "type": "number"
+              },
+              "ContractNo": {
+                "type": "string"
+              },
+              "CreateTime": {
+                "type": "string"
+              },
+              "UpdateTime": {
+                "type": "string"
+              },
+              "BuyCurrency": {
+                "type": "string"
+              },
+              "ContractType": {
+                "type": "number"
+              },
+              "ContractXRef": {
+                "type": "string"
+              },
+              "SalesGroupId": {
+                "type": "number"
+              },
+              "SellCurrency": {
+                "type": "string"
+              },
+              "CreateAppUser": {
+                "type": "number"
+              },
+              "UpdateAppUser": {
+                "type": "number"
+              },
+              "CreateLastName": {
+                "type": "string"
+              },
+              "UpdateLastName": {
+                "type": "string"
+              },
+              "CreateFirstName": {
+                "type": "string"
+              },
+              "UpdateFirstName": {
+                "type": "string"
+              },
+              "ContractStatusId": {
+                "type": "number"
+              },
+              "ContractSubTypeId": {
+                "type": "number"
+              },
+              "CreateEmailAdress": {
+                "type": "string"
+              },
+              "ResellerContactId": {
+                "type": "number"
+              },
+              "UpdateEmailAdress": {
+                "type": "string"
+              },
+              "DistributorContactId": {
+                "type": "number"
+              },
+              "EndCustomerContactId": {
+                "type": "number"
+              },
+              "CustomFields": {
+                "type": "object",
+                "properties": {
+                  "Billing_Cycle_Code": {
+                    "type": "string"
+                  },
+                  "Group_ID": {
+                    "type": "string"
+                  },
+                  "HardwareSystem_Contact_Id": {
+                    "type": "string"
+                  },
+                  "SoftwareSystem_Contact_Id": {
+                    "type": "string"
+                  },
+                  "SystemManager_Contact_Id": {
+                    "type": "string"
+                  },
+                  "Representation": {
+                    "type": "string"
+                  },
+                  "SAR": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "nullable": true,
+            "description": "Data"
+          },
+          "_links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "object",
+                "properties": {
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "uri"
+                ],
+                "description": "Self"
+              },
+              "assets": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "number"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "count",
+                  "uri"
+                ],
+                "description": "Assets"
+              },
+              "quotes": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "number"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "count",
+                  "uri"
+                ],
+                "description": "Contracts"
+              },
+              "contacts": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "number"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "count",
+                  "uri"
+                ],
+                "description": "Contacts"
+              },
+              "notes": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "number"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "count",
+                  "uri"
+                ],
+                "description": "Notes"
+              },
+              "pdf": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "number"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "count",
+                  "uri"
+                ],
+                "description": "PDF"
+              },
+              "endUser": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "uri"
+                ],
+                "description": "End User"
+              },
+              "reseller": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "uri"
+                ],
+                "description": "Reseller"
+              },
+              "distributor": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "uri"
+                ],
+                "description": "Distributor"
+              },
+              "vendor": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "uri"
+                ],
+                "description": "Vendor"
+              }
+            },
+            "required": [
+              "self",
+              "assets",
+              "quotes",
+              "contacts",
+              "notes",
+              "pdf",
+              "endUser",
+              "reseller",
+              "distributor",
+              "vendor"
+            ],
+            "description": "Links"
+          }
+        },
+        "required": [
+          "id",
+          "_links"
+        ],
+        "title": "Contract",
+        "description": "Contract model"
+      },
+      "AssetListModel": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "serviceGroupSku": {
+              "type": "string",
+              "nullable": true,
+              "description": "Service Group Sku"
+            },
+            "serviceGroupLabel": {
+              "type": "string",
+              "nullable": true,
+              "description": "Service Group Label"
+            },
+            "serviceLevelSku": {
+              "type": "string",
+              "nullable": true,
+              "description": "Service Level SKU"
+            },
+            "productSku": {
+              "type": "string",
+              "nullable": true,
+              "description": "Product SKU"
+            },
+            "name": {
+              "type": "string",
+              "nullable": true,
+              "description": "Product Name"
+            },
+            "vendor": {
+              "type": "string",
+              "nullable": true,
+              "description": "Vendor"
+            },
+            "serialNumber": {
+              "type": "string",
+              "nullable": true,
+              "description": "Serial Number"
+            },
+            "coverageStatus": {
+              "type": "string",
+              "nullable": true,
+              "description": "Coverage Status"
+            },
+            "itemsCount": {
+              "type": "number",
+              "nullable": true,
+              "description": "Items Count"
+            },
+            "retailPriceSum": {
+              "type": "number",
+              "nullable": true,
+              "description": "Retail Price Sum"
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "Contract item ID"
+                      },
+                      "itemNo": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Item No"
+                      },
+                      "contractId": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Contract ID"
+                      },
+                      "vendor": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Vendor"
+                      },
+                      "serviceLevelSku": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Service Level SKU"
+                      },
+                      "serviceName": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Service Name"
+                      },
+                      "serviceGroupSku": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Service Group Sku"
+                      },
+                      "serviceGroupLabel": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Service Group Label"
+                      },
+                      "productSku": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Product SKU"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "ContractItemId": {
+                            "type": "number"
+                          },
+                          "ContractId": {
+                            "type": "number"
+                          },
+                          "ContractItemNo": {
+                            "type": "number"
+                          },
+                          "Terminated": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "RetireDate": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ServiceProductID": {
+                            "type": "number"
+                          },
+                          "ServiceProduct": {
+                            "type": "object",
+                            "properties": {
+                              "Sku": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "ServiceLevel": {
+                            "type": "string"
+                          },
+                          "SerialNo": {
+                            "type": "string"
+                          },
+                          "Quantity": {
+                            "type": "number"
+                          },
+                          "ServiceStartDate": {
+                            "type": "string"
+                          },
+                          "ServiceEndDate": {
+                            "type": "string"
+                          },
+                          "OriginalServiceEndDate": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "SupplierId": {
+                            "type": "number"
+                          },
+                          "SupplierContractNo": {
+                            "type": "string"
+                          },
+                          "CoveredProductId": {
+                            "type": "number"
+                          },
+                          "CoveredProduct": {
+                            "type": "object",
+                            "properties": {
+                              "Sku": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "SupplierSalesOrderNo": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "SupplierPurchaseOrderNo": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "SupplierPurchaseOrderDate": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "SupplierInvoiceNo": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "SupplierInvoiceDate": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "CustomerPurchaseOrderNo": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "CustomerPurchaseOrderDate": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "CustomerInvoiceNo": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "CustomerInvoiceDate": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "CustomerOrderDate": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "CustomerInvoiceAmount": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "CustomerRetailPrice": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "EndUserSiteId": {
+                            "type": "number"
+                          },
+                          "CreateAppUser": {
+                            "type": "number"
+                          },
+                          "CreateFirstName": {
+                            "type": "string"
+                          },
+                          "CreateLastName": {
+                            "type": "string"
+                          },
+                          "CreateEmailAdress": {
+                            "type": "string"
+                          },
+                          "CreateTime": {
+                            "type": "string"
+                          },
+                          "UpdateAppUser": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "UpdateFirstName": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "UpdateLastName": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "UpdateEmailAdress": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "UpdateTime": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "CloudBillingMargin": {
+                            "type": "number"
+                          },
+                          "Cloud_Billing_Margin_PriceType": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "EndUserEntityId": {
+                            "type": "number"
+                          },
+                          "EndUserContactId": {
+                            "type": "number"
+                          },
+                          "FeatureKey": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "InstallDate": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "InstanceNo": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "MonthlyFee": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "MonthlyFeeOverage": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "MonthlyFeeOverageUsePricebook": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "No_Renew": {
+                            "type": "boolean"
+                          },
+                          "OrderNumber": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "RenewalContractItemId": {
+                            "type": "number"
+                          },
+                          "ServiceType": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "WarrantyStartDate": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "WarrantyEndDate": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "Quoted": {
+                            "type": "boolean"
+                          },
+                          "AssetId": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ContractItemCustomFields": {
+                            "type": "object",
+                            "properties": {
+                              "Document_ID": {
+                                "type": "string"
+                              },
+                              "Document_Type": {
+                                "type": "string"
+                              },
+                              "Equipment_No": {
+                                "type": "string"
+                              },
+                              "Group_Description": {
+                                "type": "string"
+                              },
+                              "LineItem_Monthly_Discount": {
+                                "type": "string"
+                              },
+                              "LineItem_Monthly_List_Price": {
+                                "type": "string"
+                              },
+                              "LineItem_Monthly_Net_Price": {
+                                "type": "string"
+                              },
+                              "Sales_Organization": {
+                                "type": "string"
+                              },
+                              "Service_Level_SKU": {
+                                "type": "string"
+                              },
+                              "Support_Account_Reference": {
+                                "type": "string"
+                              },
+                              "Service_Level_Description": {
+                                "type": "string"
+                              },
+                              "Service_Agreement_Id": {
+                                "type": "string"
+                              },
+                              "HardwareSystem_Contact_Id": {
+                                "type": "string"
+                              },
+                              "SoftwareSystem_Contact_Id": {
+                                "type": "string"
+                              },
+                              "SystemManager_Contact_Id": {
+                                "type": "string"
+                              },
+                              "Support_Life_End_Date": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "nullable": true,
+                        "description": "Data"
+                      },
+                      "_links": {
+                        "type": "object",
+                        "properties": {
+                          "self": {
+                            "type": "object",
+                            "properties": {
+                              "uri": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "uri"
+                            ],
+                            "description": "Self"
+                          },
+                          "vendor": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "uri": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "uri"
+                            ],
+                            "description": "Vendor"
+                          }
+                        },
+                        "required": [
+                          "self",
+                          "vendor"
+                        ],
+                        "description": "Links"
+                      },
+                      "_actions": {
+                        "type": "object",
+                        "properties": {
+                          "edit": {
+                            "type": "object",
+                            "properties": {
+                              "method": {
+                                "type": "string",
+                                "enum": [
+                                  "POST",
+                                  "GET",
+                                  "PUT",
+                                  "PATCH",
+                                  "DELETE"
+                                ]
+                              },
+                              "uri": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "method",
+                              "uri"
+                            ],
+                            "description": "Update"
+                          }
+                        },
+                        "required": [
+                          "edit"
+                        ],
+                        "description": "Actions"
+                      },
+                      "name": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Product Name"
+                      },
+                      "serialNumber": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Serial Number"
+                      },
+                      "coverageStatus": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Coverage Status"
+                      },
+                      "itemsCount": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Items Count"
+                      },
+                      "retailPrice": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Retail Price"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "_links",
+                      "_actions"
+                    ],
+                    "title": "ContractItem",
+                    "description": "Contract item model"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "Quote item ID"
+                      },
+                      "itemNo": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Item No"
+                      },
+                      "quoteId": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Quote ID"
+                      },
+                      "vendor": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Vendor"
+                      },
+                      "serviceLevelSku": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Service Level SKU"
+                      },
+                      "serviceName": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Service Name"
+                      },
+                      "serviceGroupSku": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Service Group Sku"
+                      },
+                      "productSku": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Product SKU"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "DiscountApplied": {
+                            "type": "boolean"
+                          },
+                          "ItemNotesRaw": {
+                            "type": "string"
+                          },
+                          "QuoteItemId": {
+                            "type": "number"
+                          },
+                          "QuoteId": {
+                            "type": "number"
+                          },
+                          "ItemNo": {
+                            "type": "number"
+                          },
+                          "Sku": {
+                            "type": "string"
+                          },
+                          "Description": {
+                            "type": "string"
+                          },
+                          "Quantity": {
+                            "type": "number"
+                          },
+                          "SerialNo": {
+                            "type": "string"
+                          },
+                          "CoveredSku": {
+                            "type": "string"
+                          },
+                          "VendorEntityId": {
+                            "type": "number"
+                          },
+                          "SellRate": {
+                            "type": "number"
+                          },
+                          "MSRP": {
+                            "type": "number"
+                          },
+                          "RetailPrice": {
+                            "type": "number"
+                          },
+                          "BuyPrice": {
+                            "type": "number"
+                          },
+                          "TotalBuyPrice": {
+                            "type": "number"
+                          },
+                          "SellPrice": {
+                            "type": "number"
+                          },
+                          "TotalValue": {
+                            "type": "number"
+                          },
+                          "UnitCOGS": {
+                            "type": "number"
+                          },
+                          "TotalCOGS": {
+                            "type": "number"
+                          },
+                          "Multiplier": {
+                            "type": "number"
+                          },
+                          "AdminFee": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "CustomerRebate": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "BuyRate": {
+                            "type": "number"
+                          },
+                          "MDFAmount": {
+                            "type": "number"
+                          },
+                          "BuyExchangeRate": {
+                            "type": "number"
+                          },
+                          "UpliftAmount": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "Margin": {
+                            "type": "number"
+                          },
+                          "MarginPercent": {
+                            "type": "number"
+                          },
+                          "ExchangeRate": {
+                            "type": "number"
+                          },
+                          "BuyCurrency": {
+                            "type": "string"
+                          },
+                          "BuyDiscount": {
+                            "type": "number"
+                          },
+                          "BuyRebate": {
+                            "type": "number"
+                          },
+                          "ReinstatementFee": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "SellDiscount": {
+                            "type": "number"
+                          },
+                          "OverrideMargin": {
+                            "type": "number"
+                          },
+                          "OverrideRebate": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "GrossMargin": {
+                            "type": "number"
+                          },
+                          "GrossMarginPercentage": {
+                            "type": "number"
+                          },
+                          "IsIncumbent": {
+                            "type": "boolean"
+                          },
+                          "EnduserSiteId": {
+                            "type": "number"
+                          },
+                          "AttachToContractItemId": {
+                            "type": "number"
+                          },
+                          "StartDate": {
+                            "type": "string"
+                          },
+                          "EndDate": {
+                            "type": "string"
+                          },
+                          "ServiceContractNo": {
+                            "type": "string"
+                          },
+                          "SourceContractItemId": {
+                            "type": "number"
+                          },
+                          "InstanceNo": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ServiceType": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "WarrantyStartDate": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "WarrantyEndDate": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "CoveredProductId": {
+                            "type": "number"
+                          },
+                          "SupplierId": {
+                            "type": "number"
+                          },
+                          "ItemNotes": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "QuoteItemOptionId": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "ParentItem": {
+                            "type": "number"
+                          },
+                          "FeatureKey": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "QuoteItemCustomFields": {
+                            "type": "object",
+                            "properties": {
+                              "Document_ID": {
+                                "type": "string"
+                              },
+                              "Document_Type": {
+                                "type": "string"
+                              },
+                              "Equipment_No": {
+                                "type": "string"
+                              },
+                              "Group_Description": {
+                                "type": "string"
+                              },
+                              "LineItem_Monthly_Discount": {
+                                "type": "string"
+                              },
+                              "LineItem_Monthly_List_Price": {
+                                "type": "string"
+                              },
+                              "LineItem_Monthly_Net_Price": {
+                                "type": "string"
+                              },
+                              "Sales_Organization": {
+                                "type": "string"
+                              },
+                              "Service_Level_SKU": {
+                                "type": "string"
+                              },
+                              "Support_Account_Reference": {
+                                "type": "string"
+                              },
+                              "Service_Level_Description": {
+                                "type": "string"
+                              },
+                              "Service_Agreement_Id": {
+                                "type": "string"
+                              },
+                              "HardwareSystem_Contact_Id": {
+                                "type": "string"
+                              },
+                              "SoftwareSystem_Contact_Id": {
+                                "type": "string"
+                              },
+                              "SystemManager_Contact_Id": {
+                                "type": "string"
+                              },
+                              "LineItem_End_Customer_Monthly_List_Price": {
+                                "type": "string"
+                              },
+                              "Support_Life_End_Date": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "nullable": true,
+                        "description": "Data"
+                      },
+                      "_links": {
+                        "type": "object",
+                        "properties": {
+                          "self": {
+                            "type": "object",
+                            "properties": {
+                              "uri": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "uri"
+                            ],
+                            "description": "Self"
+                          },
+                          "vendor": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "uri": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "uri"
+                            ],
+                            "description": "Vendor"
+                          }
+                        },
+                        "required": [
+                          "self",
+                          "vendor"
+                        ],
+                        "description": "Links"
+                      },
+                      "_actions": {
+                        "type": "object",
+                        "properties": {
+                          "edit": {
+                            "type": "object",
+                            "properties": {
+                              "method": {
+                                "type": "string",
+                                "enum": [
+                                  "POST",
+                                  "GET",
+                                  "PUT",
+                                  "PATCH",
+                                  "DELETE"
+                                ]
+                              },
+                              "uri": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "method",
+                              "uri"
+                            ],
+                            "description": "Update"
+                          }
+                        },
+                        "required": [
+                          "edit"
+                        ],
+                        "description": "Actions"
+                      },
+                      "name": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Product Name"
+                      },
+                      "serialNumber": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Serial Number"
+                      },
+                      "coverageStatus": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Coverage Status"
+                      },
+                      "itemsCount": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Items Count"
+                      },
+                      "retailPrice": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Retail Price"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "_links",
+                      "_actions"
+                    ],
+                    "title": "QuoteItem",
+                    "description": "Quote item model"
+                  }
+                ]
+              },
+              "nullable": true,
+              "description": "Items"
+            }
+          },
+          "title": "Asset",
+          "description": "Asset model"
+        },
+        "title": "AssetList",
+        "description": "Asset list model"
+      },
+      "ContactListModel": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "entityId": {
+              "type": "string"
+            },
+            "contactId": {
+              "type": "number"
+            },
+            "contactReference": {
+              "type": "string"
+            },
+            "surname": {
+              "type": "string"
+            },
+            "givenName": {
+              "type": "string"
+            },
+            "emailAddress": {
+              "type": "string"
+            },
+            "businessPhone": {
+              "type": "string"
+            },
+            "active": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "entityId"
+          ],
+          "title": "Contact",
+          "description": "Contact model"
+        },
+        "title": "ContactList",
+        "description": "Contact list model"
+      },
+      "QuoteListModel": {
+        "type": "object",
+        "properties": {}
+      },
+      "QuoteModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Quote ID"
+          },
+          "quoteNo": {
+            "type": "string",
+            "nullable": true,
+            "description": "Quote Number"
+          },
+          "quoteType": {
+            "type": "string",
+            "nullable": true,
+            "description": "Quote Type"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "description": "Quote Status"
+          },
+          "groupId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Group ID"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "Start Date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "End Date"
+          },
+          "expiryDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "Expiry Date"
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "CHF",
+              "EUR",
+              "GBP",
+              "USD"
+            ],
+            "nullable": true,
+            "description": "Currency code"
+          },
+          "vendorId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Vendor ID"
+          },
+          "distributorId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Distributor ID"
+          },
+          "resellerId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Reseller ID"
+          },
+          "endUserId": {
+            "type": "string",
+            "nullable": true,
+            "description": "End User ID"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "IsPrimary": {
+                "type": "boolean"
+              },
+              "QuoteId": {
+                "type": "number"
+              },
+              "OpportunityId": {
+                "type": "number"
+              },
+              "PrimaryQuoteId": {
+                "type": "number"
+              },
+              "QuoteNo": {
+                "type": "string"
+              },
+              "QuoteVersionNo": {
+                "type": "number"
+              },
+              "QuoteDescription": {
+                "type": "string"
+              },
+              "QuoteStatusId": {
+                "type": "number"
+              },
+              "TypeId": {
+                "type": "number"
+              },
+              "StartDate": {
+                "type": "string"
+              },
+              "EndDate": {
+                "type": "string"
+              },
+              "BuyCurrency": {
+                "type": "string"
+              },
+              "QuoteCurrency": {
+                "type": "string"
+              },
+              "ExchangeRate": {
+                "type": "number"
+              },
+              "QuoteReference": {
+                "type": "string"
+              },
+              "CustomerPoNo": {
+                "type": "string"
+              },
+              "CustomerPoDate": {
+                "type": "string"
+              },
+              "OrderDate": {
+                "type": "string"
+              },
+              "RenewalContactId": {
+                "type": "string"
+              },
+              "CustomerContactId": {
+                "type": "number"
+              },
+              "EndUserContactId": {
+                "type": "number"
+              },
+              "SalesContactId": {
+                "type": "number"
+              },
+              "UpdateTime": {
+                "type": "string"
+              },
+              "CreateTime": {
+                "type": "string"
+              },
+              "TaxRateValue": {
+                "type": "number"
+              },
+              "TaxRateId": {
+                "type": "number"
+              },
+              "OwnerEntityId": {
+                "type": "number"
+              },
+              "CustomerShippingAddressId": {
+                "type": "number"
+              },
+              "BillingAddressId": {
+                "type": "number"
+              },
+              "EnduserEntityId": {
+                "type": "number"
+              },
+              "BillingFrequencyId": {
+                "type": "number"
+              },
+              "EmailRecipients": {
+                "type": "string"
+              },
+              "InternalNotes": {
+                "type": "string"
+              },
+              "PaymentTermsId": {
+                "type": "number"
+              },
+              "DeliveryMethodId": {
+                "type": "number"
+              },
+              "InvoiceDateShiftId": {
+                "type": "number"
+              },
+              "SalesGroupId": {
+                "type": "number"
+              },
+              "ChannelStatus": {
+                "type": "number"
+              },
+              "ExpiryDate": {
+                "type": "string"
+              },
+              "SupplierExpiryDate": {
+                "type": "string"
+              },
+              "IsIncumbent": {
+                "type": "string"
+              },
+              "StopNextNotification": {
+                "type": "boolean"
+              },
+              "InvoiceNo": {
+                "type": "string"
+              },
+              "InvoiceDate": {
+                "type": "string"
+              },
+              "CreatedUser": {
+                "type": "string"
+              },
+              "CreatedFirstName": {
+                "type": "string"
+              },
+              "CreatedLastName": {
+                "type": "string"
+              },
+              "CreatedEmailAdress": {
+                "type": "string"
+              },
+              "UpdatedUser": {
+                "type": "string"
+              },
+              "UpdatedFirstName": {
+                "type": "string"
+              },
+              "UpdatedLastName": {
+                "type": "string"
+              },
+              "UpdatedEmailAdress": {
+                "type": "string"
+              },
+              "AccountManagerId": {
+                "type": "number"
+              },
+              "CustomerNotes": {
+                "type": "string"
+              },
+              "QuoteAmount": {
+                "type": "number"
+              },
+              "QuoteHomeAmount": {
+                "type": "number"
+              },
+              "TaxAmount": {
+                "type": "number"
+              },
+              "GrossMarginAmount": {
+                "type": "number"
+              },
+              "GrossMarginPercent": {
+                "type": "number"
+              },
+              "MarginAmount": {
+                "type": "number"
+              },
+              "MarginHomeAmount": {
+                "type": "number"
+              },
+              "MarginPercent": {
+                "type": "number"
+              },
+              "BuyAmount": {
+                "type": "number"
+              },
+              "Cogs": {
+                "type": "number"
+              },
+              "VendorReference": {
+                "type": "string"
+              },
+              "FirstBillingInvoiceDate": {
+                "type": "string"
+              },
+              "SupplierContactId": {
+                "type": "number"
+              },
+              "RowVersion": {
+                "type": "string"
+              },
+              "CustomFields": {
+                "type": "object",
+                "properties": {
+                  "Group_ID": {
+                    "type": "string"
+                  },
+                  "Billing_Cycle_Code": {
+                    "type": "string"
+                  },
+                  "First_Invoice_date": {
+                    "type": "string"
+                  },
+                  "Representation": {
+                    "type": "string"
+                  }
+                }
+              },
+              "BillingSummaries": {
+                "type": "array",
+                "items": {}
+              },
+              "EndUserSiteBillingSummaries": {
+                "type": "array",
+                "items": {}
+              }
+            },
+            "nullable": true,
+            "description": "Data"
+          },
+          "_links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "object",
+                "properties": {
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "uri"
+                ],
+                "description": "Self"
+              },
+              "assets": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "number"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "count",
+                  "uri"
+                ],
+                "description": "Assets"
+              },
+              "pdf": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "number"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "count",
+                  "uri"
+                ],
+                "description": "PDF"
+              },
+              "contracts": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "number"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "count",
+                  "uri"
+                ],
+                "description": "Contracts"
+              },
+              "contacts": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "number"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "count",
+                  "uri"
+                ],
+                "description": "Contacts"
+              },
+              "requests": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "number"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "count",
+                  "uri"
+                ],
+                "description": "Requests"
+              },
+              "notes": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "number"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "count",
+                  "uri"
+                ],
+                "description": "Notes"
+              },
+              "endUser": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "uri"
+                ],
+                "description": "End User"
+              },
+              "reseller": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "uri"
+                ],
+                "description": "Reseller"
+              },
+              "distributor": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "uri"
+                ],
+                "description": "Distributor"
+              },
+              "vendor": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "uri"
+                ],
+                "description": "Vendor"
+              }
+            },
+            "required": [
+              "self",
+              "assets",
+              "pdf",
+              "contracts",
+              "contacts",
+              "requests",
+              "notes",
+              "endUser",
+              "reseller",
+              "distributor",
+              "vendor"
+            ],
+            "description": "Links"
+          },
+          "_actions": {
+            "type": "object",
+            "properties": {
+              "requestChange": {
+                "type": "object",
+                "properties": {
+                  "method": {
+                    "type": "string",
+                    "enum": [
+                      "POST",
+                      "GET",
+                      "PUT",
+                      "PATCH",
+                      "DELETE"
+                    ]
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "method",
+                  "uri"
+                ],
+                "description": "Request Change"
+              },
+              "approve": {
+                "type": "object",
+                "properties": {
+                  "method": {
+                    "type": "string",
+                    "enum": [
+                      "POST",
+                      "GET",
+                      "PUT",
+                      "PATCH",
+                      "DELETE"
+                    ]
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "method",
+                  "uri"
+                ],
+                "description": "Approve"
+              },
+              "decline": {
+                "type": "object",
+                "properties": {
+                  "method": {
+                    "type": "string",
+                    "enum": [
+                      "POST",
+                      "GET",
+                      "PUT",
+                      "PATCH",
+                      "DELETE"
+                    ]
+                  },
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "method",
+                  "uri"
+                ],
+                "description": "Decline"
+              }
+            },
+            "required": [
+              "requestChange",
+              "approve",
+              "decline"
+            ],
+            "description": "Actions"
+          }
+        },
+        "required": [
+          "id",
+          "_links",
+          "_actions"
+        ],
+        "title": "Quote",
+        "description": "Quote model"
+      },
+      "ApproveQuoteModel": {
+        "type": "object",
+        "properties": {
+          "poNumber": {
+            "type": "string",
+            "description": "PO Number"
+          },
+          "attachPo": {
+            "description": "Attach PO",
+            "type": "string",
+            "format": "file",
+            "ui:options": {
+              "multipleFiles": false,
+              "acceptedFormats": {
+                "application/pdf": [
+                  ".pdf"
+                ]
+              },
+              "maxSize": 20971520
+            }
+          },
+          "comment": {
+            "type": "string",
+            "description": "Comment",
+            "ui:widget": "text-editor"
+          }
+        },
+        "description": "Approve Quote"
+      },
+      "DeclineQuoteModel": {
+        "type": "object",
+        "properties": {
+          "declineReason": {
+            "type": "string",
+            "description": "Decline reason",
+            "ui:widget": "text-editor"
+          }
+        },
+        "description": "Decline Quote"
+      },
+      "RequestQuoteModel": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Customer ID"
+          },
+          "customerName": {
+            "type": "string",
+            "nullable": true,
+            "description": "Customer Name"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true,
+            "description": "Message",
+            "ui:widget": "text-editor"
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "description": "File",
+              "type": "string",
+              "format": "file"
+            },
+            "nullable": true,
+            "description": "Files",
+            "ui:options": {
+              "multipleFiles": true,
+              "acceptedFormats": {
+                "application/pdf": [
+                  ".pdf"
+                ]
+              },
+              "maxSize": 20971520
+            }
+          },
+          "assets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "serviceGroupVendor": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Service Group Vendor"
+                },
+                "serviceGroupSku": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Service Group SKU"
+                },
+                "serialNumber": {
+                  "type": "string",
+                  "description": "Serial Number"
+                },
+                "productSku": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Product SKU"
+                },
+                "endDate": {
+                  "type": "string",
+                  "format": "date-time",
+                  "nullable": true,
+                  "description": "End Date"
+                }
+              },
+              "required": [
+                "serialNumber"
+              ]
+            },
+            "minItems": 1,
+            "description": "Assets"
+          },
+          "address": {
+            "type": "object",
+            "properties": {
+              "address": {
+                "type": "string",
+                "description": "Address"
+              },
+              "zip": {
+                "type": "string",
+                "description": "Zip"
+              },
+              "location": {
+                "type": "string",
+                "description": "Location"
+              }
+            },
+            "required": [
+              "address",
+              "zip",
+              "location"
+            ],
+            "nullable": true,
+            "description": "Address"
+          },
+          "contact": {
+            "type": "object",
+            "properties": {
+              "firstName": {
+                "type": "string",
+                "description": "First Name"
+              },
+              "lastName": {
+                "type": "string",
+                "description": "Last Name"
+              },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "description": "Email"
+              },
+              "phone": {
+                "type": "string",
+                "description": "Phone"
+              }
+            },
+            "required": [
+              "firstName",
+              "lastName",
+              "email",
+              "phone"
+            ],
+            "nullable": true,
+            "description": "Contact"
+          }
+        },
+        "required": [
+          "assets"
+        ],
+        "description": "Request Quote"
+      },
+      "RequestQuoteChangeModel": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true,
+            "description": "Message",
+            "ui:widget": "text-editor"
+          },
+          "cancellationReason": {
+            "type": "string",
+            "nullable": true,
+            "description": "Cancellation reason",
+            "ui:widget": "text-editor"
+          },
+          "assets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productSku": {
+                  "type": "string",
+                  "description": "Product sku"
+                },
+                "serialNumber": {
+                  "type": "string",
+                  "description": "Serial Number"
+                },
+                "oldServiceGroupVendor": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Old Service Group Vendor"
+                },
+                "oldServiceGroupSku": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Old Service Group SKU"
+                },
+                "newServiceGroupVendor": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "New Service Group Vendor"
+                },
+                "newServiceGroupSku": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "New Service Group SKU"
+                }
+              },
+              "required": [
+                "productSku",
+                "serialNumber"
+              ]
+            },
+            "minItems": 1,
+            "description": "Assets"
+          }
+        },
+        "required": [
+          "assets"
+        ],
+        "description": "Request Quote"
+      },
+      "UserDisableDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UserUpdateRequestDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "PermissionsModel": {
+        "type": "object",
+        "properties": {
+          "quote": {
+            "type": "object",
+            "properties": {
+              "create": {
+                "type": "boolean"
+              },
+              "read": {
+                "type": "boolean"
+              },
+              "update": {
+                "type": "boolean"
+              },
+              "approve": {
+                "type": "boolean"
+              },
+              "reject": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          },
+          "quote_item": {
+            "type": "object",
+            "properties": {
+              "create": {
+                "type": "boolean"
+              },
+              "read": {
+                "type": "boolean"
+              },
+              "update": {
+                "type": "boolean"
+              },
+              "approve": {
+                "type": "boolean"
+              },
+              "reject": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          },
+          "contract": {
+            "type": "object",
+            "properties": {
+              "create": {
+                "type": "boolean"
+              },
+              "read": {
+                "type": "boolean"
+              },
+              "update": {
+                "type": "boolean"
+              },
+              "approve": {
+                "type": "boolean"
+              },
+              "reject": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          },
+          "contract_item": {
+            "type": "object",
+            "properties": {
+              "create": {
+                "type": "boolean"
+              },
+              "read": {
+                "type": "boolean"
+              },
+              "update": {
+                "type": "boolean"
+              },
+              "approve": {
+                "type": "boolean"
+              },
+              "reject": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          },
+          "entity": {
+            "type": "object",
+            "properties": {
+              "create": {
+                "type": "boolean"
+              },
+              "read": {
+                "type": "boolean"
+              },
+              "update": {
+                "type": "boolean"
+              },
+              "approve": {
+                "type": "boolean"
+              },
+              "reject": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          },
+          "organization": {
+            "type": "object",
+            "properties": {
+              "create": {
+                "type": "boolean"
+              },
+              "read": {
+                "type": "boolean"
+              },
+              "update": {
+                "type": "boolean"
+              },
+              "approve": {
+                "type": "boolean"
+              },
+              "reject": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "create": {
+                "type": "boolean"
+              },
+              "read": {
+                "type": "boolean"
+              },
+              "update": {
+                "type": "boolean"
+              },
+              "approve": {
+                "type": "boolean"
+              },
+              "reject": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          },
+          "role": {
+            "type": "object",
+            "properties": {
+              "create": {
+                "type": "boolean"
+              },
+              "read": {
+                "type": "boolean"
+              },
+              "update": {
+                "type": "boolean"
+              },
+              "approve": {
+                "type": "boolean"
+              },
+              "reject": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          },
+          "contact": {
+            "type": "object",
+            "properties": {
+              "create": {
+                "type": "boolean"
+              },
+              "read": {
+                "type": "boolean"
+              },
+              "update": {
+                "type": "boolean"
+              },
+              "approve": {
+                "type": "boolean"
+              },
+              "reject": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false,
+        "title": "Permissions",
+        "description": "Permissions model"
+      },
+      "EntityListModel": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Entity ID"
+                },
+                "name": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Entity Name"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "Vendor",
+                    "Distributor",
+                    "Reseller",
+                    "EndUser"
+                  ],
+                  "nullable": true,
+                  "description": "Entity Type"
+                },
+                "_links": {
+                  "type": "object",
+                  "properties": {
+                    "self": {
+                      "type": "object",
+                      "properties": {
+                        "uri": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "uri"
+                      ],
+                      "description": "Self"
+                    }
+                  },
+                  "required": [
+                    "self"
+                  ]
+                },
+                "addressShort": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Short address"
+                },
+                "logoUrl": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Logo URL"
+                }
+              },
+              "required": [
+                "id",
+                "_links"
+              ],
+              "title": "EntityListItem",
+              "description": "Entity list item model"
+            }
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "hasNextPage": {
+                "type": "boolean",
+                "description": "Whether there are more items to fetch"
+              },
+              "nextCursor": {
+                "type": "string",
+                "nullable": true,
+                "description": "Cursor to use for the next page"
+              },
+              "totalCount": {
+                "type": "integer",
+                "description": "Total number of items (if available)"
+              }
+            },
+            "required": [
+              "hasNextPage",
+              "nextCursor"
+            ],
+            "title": "PaginationMeta",
+            "description": "Pagination metadata"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ],
+        "title": "PaginatedResponse",
+        "description": "Paginated response containing items"
+      },
+      "EntityModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Entity ID"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "description": "Entity Name"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Vendor",
+              "Distributor",
+              "Reseller",
+              "EndUser"
+            ],
+            "nullable": true,
+            "description": "Entity Type"
+          },
+          "_links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "object",
+                "properties": {
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "uri"
+                ],
+                "description": "Self"
+              },
+              "assets": {
+                "type": "object",
+                "properties": {
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "uri"
+                ],
+                "description": "Assets"
+              },
+              "contracts": {
+                "type": "object",
+                "properties": {
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "uri"
+                ],
+                "description": "Contracts"
+              },
+              "customers": {
+                "type": "object",
+                "properties": {
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "uri"
+                ],
+                "description": "Customers"
+              },
+              "quotes": {
+                "type": "object",
+                "properties": {
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "uri"
+                ],
+                "description": "Quotes"
+              },
+              "organization": {
+                "type": "object",
+                "properties": {
+                  "uri": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "uri"
+                ],
+                "description": "Organization"
+              }
+            },
+            "required": [
+              "self",
+              "assets",
+              "contracts",
+              "customers",
+              "quotes",
+              "organization"
+            ],
+            "description": "Links"
+          },
+          "addressShort": {
+            "type": "string",
+            "nullable": true,
+            "description": "Short address"
+          },
+          "logoUrl": {
+            "type": "string",
+            "nullable": true,
+            "description": "Logo URL"
+          }
+        },
+        "required": [
+          "id",
+          "_links"
+        ],
+        "title": "Entity",
+        "description": "Entity model"
+      },
+      "OrganizationListDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "parentId": {
+                  "type": "string",
+                  "format": "uuid",
+                  "nullable": true
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "createdAt",
+                "updatedAt"
+              ],
+              "title": "Organization",
+              "description": "Organization model"
+            }
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "number"
+              },
+              "page": {
+                "type": "number"
+              },
+              "limit": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "total",
+              "page",
+              "limit"
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "meta"
+        ],
+        "title": "OrganizationList",
+        "description": "Organization list model"
+      },
+      "OrganizationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "parentId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "Organization",
+        "description": "Organization model"
+      },
+      "User": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateOrganizationDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The name of the organization"
+          },
+          "entityId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The ID of the entity to link to this organization (optional)"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreateOrganization",
+        "description": "Data required to create a new organization"
+      },
+      "EntityEntity": {
+        "type": "object",
+        "properties": {}
+      },
+      "LinkEntityDto": {
+        "type": "object",
+        "properties": {
+          "entityId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The ID of the entity to link to the organization"
+          }
+        },
+        "required": [
+          "entityId"
+        ],
+        "title": "LinkEntity",
+        "description": "Data required to link an entity to an organization"
+      },
+      "OrganizationEntityDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organizationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "entityId": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "organizationId",
+          "entityId",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "OrganizationEntity",
+        "description": "Organization-entity relationship model"
+      },
+      "DevTokenRequestDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email address of the user to authenticate",
+            "example": "developer@example.com",
+            "format": "email"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "DevUserDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email address of the user to authenticate",
+            "example": "tesedi@example.com",
+            "format": "email"
+          },
+          "roleId": {
+            "type": "string",
+            "description": "Role ID to assign to the user",
+            "example": "1"
+          }
+        },
+        "required": [
+          "email",
+          "roleId"
+        ]
+      }
+    }
+  }
+}

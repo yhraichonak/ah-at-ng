@@ -1,0 +1,30 @@
+{
+  "@odata.context": "https://tesediws.iasset.com/v3/data/$metadata#Products/$entity",
+  "ProductId": 1768171,
+  "Sku": "J9F48A",
+  "Description": "HPE MSA 1.2TB 12G SAS 10K 2.5in ENT HDD",
+  "ProductType": "H",
+  "ProductFamily": "LI",
+  "ProductReference": "",
+  "PrimaryItem": true,
+  "RenewalItem": false,
+  "RenewalTerm": 0,
+  "VendorId": 255861,
+  "ProductCategoryId": null,
+  "ProductGroup": "HW",
+  "ProductSubGroup": null,
+  "OwnerEntityId": 7001,
+  "CreateUser": "Integration",
+  "CreateFirstName": null,
+  "CreateLastName": null,
+  "CreateEmailAdress": null,
+  "CreateTime": "2021-04-07T02:03:38.357Z",
+  "UpdateUser": "xander.ford@tesedi.com",
+  "UpdateFirstName": "Xander",
+  "UpdateLastName": "Ford",
+  "UpdateEmailAdress": "xander.ford@tesedi.com",
+  "UpdateTime": "2024-07-31T12:36:41.437Z",
+  "CustomFields": [
+    { "Id": 435, "Name": "Test field", "Value": "Test Value" }
+  ]
+}

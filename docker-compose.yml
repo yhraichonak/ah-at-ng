@@ -1,11 +1,17 @@
 version: '1'
 services:
-   at:
+  at:
     hostname: at-host
+    network_mode: "host"
     build:
       context: ./
     volumes:
       - ./:/at
     environment:
-      TEST_ENVIRONMENT: ${TEST_ENVIRONMENT}
+      ENVIRONMENT: ${ENVIRONMENT}
       STAY_ALIVE: ${STAY_ALIVE}
+      TESTS: ${TESTS}
+      JENKINS_AUTH: ${JENKINS_AUTH}
+      FRESHDESK_AUTH: ${FRESHDESK_AUTH}
+      TRIGGER: ${TRIGGER}
+      MODULE: ${MODULE}

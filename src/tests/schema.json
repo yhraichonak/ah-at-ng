@@ -1,0 +1,610 @@
+{
+  "$id": "schema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Get permissions",
+  "definitions": {
+    "welcome": {
+      "message": {"const": "Hello World!"}
+    },
+    "whoami": {
+      "type": "object",
+      "required": [ "timestamp", "user"],
+      "properties": { "timestamp": {"type":"string"},
+                      "user": {
+                        "type" :  "object",
+                        "required": [ "exp", "iat", "jti", "iss", "aud", "sub", "typ","azp", "sid", "allowed-origins",
+                          "realm_access","resource_access", "scope", "email_verified", "preferred_username", "enabled", "email" ],
+                        "properties":{
+                          "exp": {"type": "number"},
+                          "iat": {"type": "number"},
+                          "jti": {"type": "string"},
+                          "iss": {"type": "string"},
+                          "aud": {"type": "string"},
+                          "sub": {"type": "string"},
+                          "typ": {"type": "string"},
+                          "azp": {"type": "string"},
+                          "sid": {"type": "string"},
+                          "allowed-origins": {"type": "array"},
+                          "realm_access": {"type": "object"},
+                          "resource_access": {"type": "object"},
+                          "scope": {"type": "string"},
+                          "email_verified": {"type": "boolean"},
+                          "preferred_username": {"type": "string"},
+                          "enabled": {"type": "boolean"},
+                          "email": {"type": "string"}
+                        }
+                      }
+             }
+    },
+    "global_search_results": {
+      "type": "object",
+      "required": [ "quotes","contracts", "customers","assets"],
+      "properties": {
+        "quotes": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/quote_summary" }
+        },
+        "contracts": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/contract_summary" }
+        },
+        "customers": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/entity_summary" }
+        },
+        "assets": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/asset_summary" }
+        }
+      }
+    },
+    "quotes": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/quote_summary" }
+    },
+    "quote_details": {
+      "type": "object",
+      "required": [ "id","quoteNo", "status","startDate","endDate","groupId",
+                     "currency","endUserId","resellerId","distributorId"],
+      "properties": {
+        "id": {"type": "string"},
+        "quoteNo": {"type": ["string","null"]},
+        "status": {"type": "string"},
+        "expiryDate": {"type": ["string","null"]},
+        "startDate": {"type": ["string","null"]},
+        "endDate": {"type": ["string","null"]},
+        "groupId": {"type": ["string","null"]},
+        "currency": {"type": ["string","null"]},
+        "endCustomerId": {"type": ["string","null"]},
+        "resellerId": {"type": ["string","null"]},
+        "endUserId": {"type": ["string","null"]},
+        "distributorId": {"type": ["string","null"]}}
+    },
+    "quote_summary": {
+      "type": "object",
+      "required": [ "id","quoteNo", "status","groupId", "currency"],
+      "properties": {
+        "id": {"type": "string"},
+        "quoteNo": {"type": ["string","null"]},
+        "status": {"type": "string"},
+        "expiryDate": {"type": ["string","null"]},
+        "startDate": {"type": ["string","null"]},
+        "currency": {"type": ["string","null"]}}
+    },
+    "quote_requests": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/quote_request" }
+    },
+
+    "quote_request": {
+      "type": "object",
+      "required": [ "action","quoteId", "request", "triggeredBy", "createdAt","updatedAt", "user"],
+      "properties": {
+        "action": {"type": "string"},
+        "quoteId":  {"type":  ["string","null"]},
+        "request": {"type": "object"},
+        "triggeredBy": {"type": "object"},
+        "createdAt": {"type": "string"},
+        "updatedAt": {"type": "string"},
+        "user": {"type": "object"}
+    }
+    },
+    "entities": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/entity_summary" }
+    },
+    "entity_summary": {
+      "type": "object",
+      "required": [ "id","name"],
+      "properties": {
+        "id": {"type": "string"},
+        "name": {"type":  ["string","null"]},
+        "type": {"type":  "string"}
+      }
+    },
+    "contacts": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/contact" }
+    },
+    "contacts_summaries": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/contact_summary" }
+    },
+    "contact": {
+      "type": "object",
+      "required": [ "id","entityId","status","contactId", "surname", "givenName", "emailAddress",
+                    "businessPhone","active", "type"],
+      "properties": {
+        "id": {"type": "string"},
+        "entityId": {"type": "string"},
+        "contactId": {"type":  "string"},
+        "surname": {"type":  "string"},
+        "givenName": {"type":  "string"},
+        "emailAddress": {"type":  ["string","null"]},
+        "businessPhone": {"type":  ["string","null"]},
+        "active": {"type":  "boolean"}
+      }
+    },
+    "contact_summary": {
+      "type": "object",
+      "required": [ "id","entityId","status", "surname", "givenName", "emailAddress",
+        "businessPhone","active"],
+      "properties": {
+        "id": {"type": "string"},
+        "entityId": {"type": "string"},
+        "surname": {"type":  "string"},
+        "givenName": {"type":  "string"},
+        "emailAddress": {"type":  ["string","null"]},
+        "businessPhone": {"type":  ["string","null"]},
+        "active": {"type":  "boolean"}
+      }
+    },
+    "contracts": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/contract_summary" }
+    },
+    "contract_summary": {
+      "type": "object",
+      "required": [ "id","contractNumber","sar", "status", "groupId", "endDate"],
+      "properties": {
+        "id": {"type": "string"},
+        "contractNumber": {"type": "string"},
+        "sar": {"type":  ["string","null"]},
+        "status": {"type":   ["string","null"]},
+        "groupId": {"type":  "string"},
+        "startDate": {"type": ["string","null"]},
+        "endDate": {"type": ["string","null"]}}
+    },
+    "contract_details": {
+      "type": "object",
+      "required": [ "id","contractNumber", "sar", "status","groupId","startDate","endDate",
+        "currency","vendorId","distributorId","resellerId","endUserId"],
+      "properties": {
+        "id": {"type": "string"},
+        "contractNumber": {"type": "string"},
+        "sar": {"type": ["string","null"]},
+        "status": {"type": "string"},
+        "groupId": {"type": ["string","null"]},
+        "startDate": {"type": ["string","null"]},
+        "endDate": {"type": ["string","null"]},
+        "currency": {"type": "string"},
+        "vendorId": {"type":  ["string","null"]},
+        "distributorId": {"type":  ["string","null"]},
+        "resellerId": {"type": ["string","null"]},
+        "endUserId": {"type":  ["string","null"]},
+        "retailValue": {"type":  ["number","null"]}
+      }
+    },
+    "service_packs": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/service_pack" }
+    },
+    "service_pack": {
+      "type": "object",
+      "required": [ "id","packNo", "serialNumber", "productSku", "vendorId",
+                    "endDate","startDate","endUserId","status","resellerId","vendor","endUser"],
+      "properties": {
+        "id": {"type": "string"},
+        "packNo": {"type": "string"},
+        "serialNumber": {"type":  "string"},
+        "productSku": {"type":   "string"},
+        "vendorId": {"type": ["string","null"]},
+        "startDate": {"type": ["string","null"]},
+         "endDate": {"type": "string"}},
+        "endUserId": {"type": "string"},
+        "resellerId": {"type": "string"},
+         "status": {"type": "string"},
+        "reseller": { "$ref": "#/definitions/entity_summary"},
+        "endUser": { "$ref": "#/definitions/entity_summary"}
+    },
+    "customers": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/customer_details" }
+    },
+    "customer_details": {
+      "type": "object",
+      "required": [ "id","name", "type"],
+      "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "serialNumber": {"type": ["string","null"]}
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/asset_details" }
+    },
+    "asset_details": {
+      "type": "object",
+      "required": [ "name", "productSku" , "serviceGroupLabel","coverageStatus", "startDate", "endDate"],
+      "properties": {
+        "name": {"type": ["string","null"]},
+        "productSku": {"type": ["string","null"]},
+        "serviceGroupLabel": {"type": ["string","null"]},
+        "coverageStatus": {"type": ["string","null"]},
+        "serialNo": {"type": "string"},
+        "startDate": {"type": ["string","null"]},
+        "endDate": {"type": ["string","null"]},
+        "vendor": {"type": "object"},
+        "endUser": {"type": "object"}
+      }
+    },
+
+    "billing_summary": {
+      "type": "object",
+      "required": [ "items", "summaries" , "totalBeforeDiscount", "totalAfterDiscount"],
+      "properties": {
+        "items": {"type": "array"},
+        "totalBeforeDiscount": {"type": "number"},
+        "totalAfterDiscount": {"type": "number"},
+        "summaries": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/billing_summary_item" }
+        }
+      }
+    },
+
+    "billing_summary_item": {
+      "type": "object",
+      "required": [ "startDate", "endDate" , "totalBeforeDiscount","totalAfterDiscount", "items"],
+      "properties": {
+        "startDate": {"type": "string"},
+        "endDate": {"type": "string"},
+        "totalBeforeDiscount": {"type": "number"},
+        "totalAfterDiscount": {"type": "number"},
+        "items": {  "type": "array"}
+      }
+    },
+
+    "asset_warranty": {
+      "type": "object",
+      "required": [ "coverageStatus", "technicalStatus" , "coverageStatusUpdatedAt", "coverageEntries"],
+      "properties": {
+        "coverageStatus": {"type": "string"},
+        "technicalStatus": {"type": "string"},
+        "coverageStatusUpdatedAt": {"type": "string"},
+        "coverageEntries": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/asset_coverage_entry" }
+        }
+      }
+    },
+
+    "asset_coverage_entry": {
+      "type": "object",
+      "required": [ "type", "status" , "description","serviceLevels","coverageEndDate","coverageStartDate"],
+      "properties": {
+        "type": {"type": "string"},
+        "status": {"type": "string"},
+        "description": {"type": "string"},
+        "serviceLevels": {"type": "array"},
+        "coverageEndDate": {"type": "string"},
+        "coverageStartDate": {"type": "string"}
+      }
+    },
+    "products": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/product_details" }
+    },
+    "product_details": {
+      "type": "object",
+      "required": [ "vendorId", "sku","description"],
+      "properties": {
+        "vendorId": {"type": "string"},
+        "sku": {"type": "string"},
+        "productId": {"type": "string"},
+        "description": {"type": "string"}
+      }
+    },
+    "asset_summary": {
+      "type": "object",
+      "required": [ "name", "serial_number", "product_sku","service_group_sku","coverage_status"],
+      "properties": {
+        "id": {"type": "string"},
+        "name": {"type": ["string","null"]},
+        "serial_number": {"type": ["string","null"]},
+        "product_sku": {"type": ["string","null"]},
+        "coverageStatus": {"type": ["string","null"]},
+        "service_group_sku": {"type": ["string","null"]},
+        "coverage_status": {"type": ["string","null"]}
+      }
+    },
+    "organizations": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/organization" }
+    },
+    "organization": {
+      "type": "object",
+      "required": [ "id", "name", "createdAt", "updatedAt"],
+      "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "createdAt": {"type": "string"},
+        "updatedAt": {"type": "string"}
+      }
+    },
+    "organization_entities": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/organization_entity" }
+    },
+    "organization_entity": {
+      "type": "object",
+      "required": [ "id", "createdAt", "updatedAt"],
+      "properties": {
+        "id": {"type": "string"},
+        "createdAt": {"type": "string"},
+        "updatedAt": {"type": "string"},
+        "organization": {
+         "$ref": "#/definitions/organization"
+        },
+        "entity": {
+          "$ref": "#/definitions/entity_summary"
+        }
+      }
+    },
+    "users": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/user_details" }
+    },
+    "sp_bulk_verify": {
+      "type": "object",
+      "required": [ "success","failed"],
+      "properties": {
+        "failed": {"type": "array", "items": { "$ref": "#/definitions/sp_bulk_verify_item_failures" }},
+        "success": {"type": "array", "items": { "$ref": "#/definitions/sp_bulk_verify_item" }}}
+    },
+    "sp_bulk_verify_item_failures": {
+      "type": "object",
+      "required": [ "row","serialNumber","productSku","servicePackSerialNumber","endUserName","contactEmail","endUserId","error","errorType"],
+      "properties": {
+        "row": {"type": "number"},
+        "serialNumber": {"type": "string"},
+        "productSku": {"type": "string"},
+        "servicePackSerialNumber": {"type": "string"},
+        "endUserName": {"type": "string"},
+        "contactEmail": {"type": "string"},
+        "endUserId": {"type": "string"},
+        "error": {"type": "string"},
+        "errorType": {"type": "string"}
+      }
+    },
+    "sp_bulk_verify_item": {
+      "type": "object",
+      "required": [ "row","serialNumber","productSku","servicePackSerialNumber","endUserName","contactEmail","endUserId"],
+      "properties": {
+        "row": {"type": "number"},
+        "serialNumber": {"type": "string"},
+        "productSku": {"type": "string"},
+        "servicePackSerialNumber": {"type": "string"},
+        "endUserName": {"type": "string"},
+        "contactEmail": {"type": "string"},
+        "endUserId": {"type": "string"}
+      }
+    },
+    "sp_verify": {
+      "type": "object",
+      "required": [ "status","productSku", "productDescription","serviceGroupSku", "serviceGroupDescription"],
+      "properties": {
+        "status": {"type": "string"},
+        "productSku": {"type": "string"},
+        "productDescription": {"type": "string"},
+        "serviceGroupSku": {"type": "string"},
+        "serviceGroupDescription": {"type": "string"}}
+    },
+    "user_details": {
+      "type": "object",
+      "required": [ "id","isActive", "email"],
+       "properties": {
+                "id": {"type": "string"},
+                "isActive": {"type": "boolean"},
+                "email": {"type": "string"},
+                "roleName": {"type": "string"},
+                "firstName": {"type": ["string","null"]},
+                "lastName": {"type": ["string","null"]},
+                "phone": {"type": ["string","null"]}}
+    },
+    "users_admin": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/user_details_admin" }
+    },
+    "user_details_admin": {
+      "type": "object",
+      "required": [ "id", "email", "firstName", "lastName", "phone", "inviteExpiresAt","status","locale", "timezone", "ignoreAdvPerms"],
+      "properties": {
+        "id": {"type": "string"},
+        "email": {"type": "string"},
+        "firstName": {"type": ["string","null"]},
+        "lastName": {"type": ["string","null"]},
+        "phone": {"type": ["string","null"]},
+        "inviteExpiresAt": {"type": ["string","null"]},
+        "status": {"type": ["string","null"]},
+        "lastLoginAt": {"type": ["string","null"]},
+        "locale": {"type": "string"},
+        "timezone": {"type": "string"},
+        "ignoreAdvPerms": {"type": "boolean"}
+      }
+    },
+
+    "refresh_token": {
+      "type": "object",
+      "required": ["access_token", "refresh_token", "expires_at","refresh_expires_in","token_type",
+                   "not-before-policy", "session_state", "scope"],
+      "properties": {
+                "access_token": {"type": "string"},
+                "refresh_token": {"type": "string"},
+                "id_token": {"type": "string"},
+                "expires_at": {"type": "integer"},
+                "refresh_expires_in": {"const": 7200},
+                "token_type": {"const": "Bearer"},
+                "not-before-policy": {"type": "integer"},
+                "session_state": {"type": "string"},
+                "scope": {"const": "email profile"}}
+    },
+    "login": {
+      "type": "object",
+      "required": ["redirect", "token", "user"],
+      "properties": {
+        "redirect": {"type": "boolean"},
+        "token": {"type": "string"},
+        "user": {
+            "type": "object",
+            "required": ["name", "email", "id"],
+            "properties": {
+              "name": {"type": "string"},
+              "email": {"type": "string"},
+              "id": {"type": "string"}
+          }
+        }
+      }
+    },
+    "notifications": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/notification" }
+    },
+    "notification": {
+        "type": "object",
+        "required": ["id", "urgency", "content",  "startDate", "endDate"],
+        "properties": {
+          "id": {"type": "string"},
+          "urgency": {"type": "string"},
+          "content": {"type": "object"},
+          "startDate": {"type": "string"},
+          "endDate": {"type": "string"}}
+    },
+    "metrics": {
+      "type": "object",
+      "patternProperties": {"(process|nodejs|app)_.*": {"type":"string"}},
+      "additionalProperties": false,
+      "minProperties": 34
+    },
+    "feature-flags": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/features" }
+    },
+    "features": {
+      "type": "object",
+      "required": ["name", "enabled"],
+      "properties":{"name": {"type": "string"},
+                    "enabled": {"type": "boolean"}}
+    },
+    "kpis": {
+      "type": "object",
+      "required": ["contracts", "quotes", "customers"],
+      "properties":{"access_token": {"type": "string"},
+        "contracts": {"type": "object"},
+        "quotes": {"type": "object"},
+        "customers": {"type": "object"}}
+    },
+    "get_token": {
+      "type": "object",
+      "required": ["access_token", "refresh_token", "id_token", "expires_in"],
+      "properties":{"access_token": {"type": "string"},
+                  "refresh_token": {"type": "string"},
+                  "id_token": {"type": "string"},
+                  "expires_in": {"const": 900}}
+    },
+    "user_roles": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/user_role" }
+    },
+    "user_role": {
+      "type": "object",
+      "required": ["id", "name", "description", "organizationId", "createdAt", "updatedAt"],
+      "properties": {
+                  "id": {"type": "string"},
+                  "name": {"type": "string"},
+                  "description": {"type": "string"},
+                  "organizationId": {"type": "string"},
+                  "createdAt": {"type": "string"},
+                  "updatedAt": {"type": "string"}}
+    },
+    "organization_roles": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/organization_role" }
+    },
+    "organization_role": {
+      "type": "object",
+      "required": ["id", "name", "description"],
+      "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "description": {"type": "string"}
+    }},
+    "user_groups": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/user_group" }
+    },
+    "user_group": {
+      "type": "object",
+      "required": ["id", "name", "path", "subGroups"],
+      "properties": {
+                  "id": {"type": "string"},
+                  "name": {"type": "string"},
+                  "path": {"type": "string"},
+                  "subGroups": {"type": "array"}}
+    },
+    "user_permissions": {
+      "type": "object",
+      "required": [
+        "quote", "quote_item", "contract","contract_item",  "organization", "user"],
+      "properties": {
+                  "quote": {
+                    "type": "object",
+                    "required": [ "create","read", "update", "approve"],
+                    "properties": {
+                      "create": {"type": "boolean"},"read": {"type": "boolean"},"update": {"type": "boolean"},"approve": {"type": "boolean"}
+                    }
+                   },
+                  "quote_item": {
+                    "type": "object",
+                    "required": [ "create","read"],
+                    "properties": {
+                      "create": {"type": "boolean"},"read": {"type": "boolean"},"update": {"type": "boolean"},"approve": {"type": "boolean"}
+                    }},
+                  "contract": {
+                    "type": "object",
+                    "required": [ "create","read"],
+                    "properties": {
+                      "create": {"type": "boolean"},"read": {"type": "boolean"},"update": {"type": "boolean"},"approve": {"type": "boolean"}
+                    }},
+                  "contract_item": {
+                    "type": "object",
+                    "required": [ "create","read"],
+                    "properties": {
+                      "create": {"type": "boolean"},"read": {"type": "boolean"},"update": {"type": "boolean"},"approve": {"type": "boolean"}
+                    }},
+                  "organization": {
+                    "type": "object",
+                    "required": [ "read", "update"],
+                    "properties": {
+                      "create": {"type": "boolean"},"read": {"type": "boolean"},"update": {"type": "boolean"},"approve": {"type": "boolean"}
+                    }},
+                  "user": {
+                    "type": "object",
+                    "required": [ "create","read"],
+                    "properties": {
+                      "create": {"type": "boolean"},"read": {"type": "boolean"},"update": {"type": "boolean"},"approve": {"type": "boolean"}
+                    }}}
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "@odata.context": "https://tesediws.iasset.com/v3/data/$metadata#ContractEntity",
+  "value": [
+    {
+      "ContractEntityId": 247077,
+      "ContractId": 3502,
+      "EntityType": "Vendor",
+      "EntityId": 255861,
+      "CreateAppUser": 3486,
+      "CreateTime": "2021-10-13T09:26:24.2933333Z"
+    },
+    {
+      "ContractEntityId": 247076,
+      "ContractId": 3502,
+      "EntityType": "Distributor",
+      "EntityId": 7001,
+      "CreateAppUser": 3486,
+      "CreateTime": "2021-10-13T09:26:24.2933333Z"
+    },
+    {
+      "ContractEntityId": 247078,
+      "ContractId": 3502,
+      "EntityType": "Reseller",
+      "EntityId": 301986,
+      "CreateAppUser": 3486,
+      "CreateTime": "2021-10-13T09:26:24.2933333Z"
+    },
+    {
+      "ContractEntityId": 247079,
+      "ContractId": 3502,
+      "EntityType": "EndUser",
+      "EntityId": 308197,
+      "CreateAppUser": 3486,
+      "CreateTime": "2021-10-13T09:26:24.2933333Z"
+    }
+  ]
+}
